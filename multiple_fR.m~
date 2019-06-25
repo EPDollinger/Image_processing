@@ -1,0 +1,20 @@
+function [Areas] = multiple_fR(structure_of_images)
+
+names = fieldnames(structure_of_images);
+
+Area_table = table();
+
+Area_table.Properties.Col
+
+for i = 1:length(names)
+    
+    name = names(i);
+    
+    [~,props] = filterRegions_one(structure_of_images.name);
+    Area_table(:,i) = props.Area;
+    
+end
+
+writematrix('Area counts'
+
+end
