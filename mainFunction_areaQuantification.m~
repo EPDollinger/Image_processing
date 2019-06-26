@@ -1,23 +1,22 @@
 %script main_function_area
-
+% Fix import filename issue. Need the filenames to come from the
+% filenames themselves, not as user input
+%% Inputs for user
 %replace "Pictures" with where your folder containing the pictures is
-location = addpath('~/Documents/Work for Scott/I'); 
+location = '~/Documents/Work for Scott/Image_processing/Pictures/';
 
-%give each file a name. Files are read in alphabetical order
-filenames = {'File1','File2'};
+%name the excel file where the areas are stored
+name_of_excel_file = 'test5';
 
-%read the images into a datastore
-ds = imageDatastore('Pictures','Labels',filenames);
+%% Code stuff
 
-%read the images into a cell
-I_list = readall(ds);
-
-%read the images into a structure
-I_struct = cell2struct(I_list,filenames);
+%load_data_and_clean_filenames loads the data and removes '.jpg' from the
+%end of the filename. I_struct contains the BW images and their names
+I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. 
-[BW_out_array,Area_array] = multiple_fR(I_struct,'testscript');
+[BW_out_array,Area_array] = multiple_fR(I_struct,name_of_excel_file);
 
 %if you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
 %the command window. If you want to see a list of specific areas, type
