@@ -1,12 +1,25 @@
-%script main_function_area
-% Fix import filename issue. Need the filenames to come from the
-% filenames themselves, not as user input
+%% This script is for area quantification of H&E stains. The inputs are the 
+% location of your pictures and what you want your excel file to be called. 
+% The outputs are the black and white images that are actually
+% quantified and the excel file with the areas of each image. The function 
+% is told to not quantify anything that touches the border of the image, and anything
+% that is smaller than 3000 pixels. 
+ 
+
+% Note: the pictures need to be in
+% JPG or PNG format, and there cannot be any spaces in the name of the
+% file. 
+
+% clears the workspace
+clear all
 %% Inputs for user
-%replace "Pictures" with where your folder containing the pictures is
+
+%location is where your picture files are
 location = '~/Documents/Work for Scott/Image_processing/Pictures/';
 
-%name the excel file where the areas are stored
-name_of_excel_file = 'test5';
+%name the excel file where the areas are stored and where you want the file to be
+%stored.
+name_of_excel_file = '~/Documents/test7 ';
 
 %% Main function
 
@@ -18,20 +31,22 @@ I_struct = load_data_and_clean_filenames(location);
 %cell of the areas of each file. 
 [BW_out_array,Area_array] = multiple_fR(I_struct,name_of_excel_file);
 
-%if you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
-%the command window. If you want to see a list of specific areas, type
-%Area_array.name_of_file in the command window
+% if you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
+% the command window. If you want to see which spot corresponds to each area, 
+% type imageRegionAnalyzer(BW_out_array.name_of_file). 
+% If you want to see the list of areas, type
+% Area_array.name_of_file in the command window. 
 
 %% Supplemental functions
 
 function I_struct = load_data_and_clean_filenames(location)
 
-dir_struct = dir([location '/*.jpg']);
+dir_struct = dir([location '/*.*g']);
 
 filenames = {dir_struct.name};
 
 for filename_number = 1:length(filenames)
-    filenames{filename_number} = filenames{filename_number}(1:end-4)
+    filenames{filename_number} = filenames{filename_number}(1:end-4);
 end
 
 %read the images into a datastore
@@ -42,7 +57,6 @@ I_list = readall(ds);
 
 %read the images into a structure
 I_struct = cell2struct(I_list,filenames'); 
-
 
 end
 
