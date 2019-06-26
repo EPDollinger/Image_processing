@@ -1,0 +1,24 @@
+%script main_function_area
+
+%replace "Pictures" with where your folder containing the pictures is
+location = addpath('~/Documents/Work for Scott/I'); 
+
+%give each file a name. Files are read in alphabetical order
+filenames = {'File1','File2'};
+
+%read the images into a datastore
+ds = imageDatastore('Pictures','Labels',filenames);
+
+%read the images into a cell
+I_list = readall(ds);
+
+%read the images into a structure
+I_struct = cell2struct(I_list,filenames);
+
+%run the code on the images. BW_out_array is the BW images, Area_array is a
+%cell of the areas of each file. 
+[BW_out_array,Area_array] = multiple_fR(I_struct,'testscript');
+
+%if you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
+%the command window. If you want to see a list of specific areas, type
+%Area_array.name_of_file in the command window

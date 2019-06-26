@@ -26,7 +26,7 @@ properties = sortProperties(properties, 'Area');
 % Uncomment the following line to return the properties in a table.
 properties = struct2table(properties);
 
-writematrix(properties.Area,['Area count'],'FileType', 'spreadsheet')
+%writematrix(properties.Area,['Area count'],'FileType', 'spreadsheet')
 
 function properties = sortProperties(properties, sortField)
 
