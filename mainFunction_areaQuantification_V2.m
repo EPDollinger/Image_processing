@@ -29,11 +29,11 @@ format compact
 %% Inputs for user
 
 %Location is where your picture files are. Write the name in quotes.
-location = '~/Documents/Work for Scott/Image_processing/Pictures/Imiquimod_sections052019/';
+location = '~/Documents/Work for Scott/Pictures/Imiquimod_sections052319/';
 
 %Name the excel file where the areas are stored. The file will be stored 
 %in the folder where the pictures are. Write the name in quotes.
-name_of_excel_file = 'All counts for area';
+name_of_excel_file = '052319 pictures';
 
 %% Main function
 
@@ -43,7 +43,7 @@ I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. 
-[BW_out_array,Area_array] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
+[BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
 
 %% Supplemental functions
 
@@ -70,7 +70,7 @@ I_struct = cell2struct(I_list,filenames');
 
 end
 
-function [BW_out_array,Area_array] = multiple_fR(structure_of_images,name_of_excel_file)
+function [BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file)
 %% This is a function with input a structure of images (several images grouped together) 
 %% and output an excel file with list of areas. 
 
@@ -80,6 +80,8 @@ Area_array = {}; % setting up variables
 BW_out_array = {}; % setting up variables
 
 names = fieldnames(structure_of_images); %The list of names of each picture
+
+Average_area = {};
 
 %% Actual code. This block runs filterRegions_one on each picture in the group, stores the black and white image that is actually being quantified, and outputs the areas of the white images to the excel file.
 
@@ -94,6 +96,9 @@ for i = 1:numel(names) %iterate over the number of pictures
     
     %store Area specifically from properties
     Area_array.(names{i}) = props.Area;
+    
+    %store Average area of each picture
+    Average_area.(names{i}) = mean(Area_array.(names{i}));
     
     if i / 26 < 1 %if the column can start in A
         %Write Area in a column in excel. Each image has its own column and the
@@ -113,7 +118,7 @@ end
 %Write name of each image for each column
 % namesTable = cell2table(names);
     
-writecell(names',name_of_excel_ file,'FileType','Spreadsheet','Range',[char(65) '1:' char(64 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
+writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(64 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
 
 end
 
