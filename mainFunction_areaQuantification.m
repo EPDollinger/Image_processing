@@ -3,23 +3,27 @@
 % The outputs are the black and white images that are actually
 % quantified and the excel file with the areas of each image. The function 
 % is told to not quantify anything that touches the border of the image, and anything
-% that is smaller than 3000 pixels. 
- 
-
-% Note: the pictures need to be in
+% that is smaller than 3000 pixels or larger than 300000. 
+% Note: the pictures need to be in either
 % JPG or PNG format, and there cannot be any spaces in the name of the
-% file. 
+% file.
+% If you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
+% the command window. If you want to see which spot corresponds to each area, 
+% type imageRegionAnalyzer(BW_out_array.name_of_file). 
+% If you want to see the list of areas, type
+% Area_array.name_of_file in the command window. 
 
 % clears the workspace
 clear all
+format compact
 %% Inputs for user
 
-%location is where your picture files are
-location = '~/Documents/Work for Scott/Image_processing/Pictures/';
+%Location is where your picture files are. Write the name in quotes.
+location = '~/Documents/Work for Scott/Image_processing/Pictures/Imiquimod_sections052019/';
 
-%name the excel file where the areas are stored and where you want the file to be
-%stored.
-name_of_excel_file = '~/Documents/test7 ';
+%Name the excel file where the areas are stored. The file will be stored 
+%in the folder where the pictures are. Write the name in quotes.
+name_of_excel_file = 'All counts for area';
 
 %% Main function
 
@@ -29,13 +33,7 @@ I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. 
-[BW_out_array,Area_array] = multiple_fR(I_struct,name_of_excel_file);
-
-% if you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
-% the command window. If you want to see which spot corresponds to each area, 
-% type imageRegionAnalyzer(BW_out_array.name_of_file). 
-% If you want to see the list of areas, type
-% Area_array.name_of_file in the command window. 
+[BW_out_array,Area_array] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
 
 %% Supplemental functions
 
@@ -43,10 +41,12 @@ function I_struct = load_data_and_clean_filenames(location)
 
 dir_struct = dir([location '/*.*g']);
 
+%Name the files
 filenames = {dir_struct.name};
 
 for filename_number = 1:length(filenames)
     filenames{filename_number} = filenames{filename_number}(1:end-4);
+    filenames{filename_number} = strrep(filenames{filename_number},' ','_');
 end
 
 %read the images into a datastore
@@ -73,6 +73,9 @@ names = fieldnames(structure_of_images); %The list of names of each picture
 
 %% Actual code. This block runs filterRegions_one on each picture in the group, stores the black and white image that is actually being quantified, and outputs the areas of the white images to the excel file.
 
+%How many pictures there are
+['There are ' num2str(length(names)) ' pictures']
+
 for i = 1:numel(names) %iterate over the number of pictures
         
     %store BW image, and properties from running filterRegions_one on each
@@ -86,6 +89,8 @@ for i = 1:numel(names) %iterate over the number of pictures
     %numbering starts at A.
     writematrix(Area_array.(names{i}),name_of_excel_file,'FileType','Spreadsheet','Range',[char(64+i) '2:' char(64+i) num2str(length(Area_array.(names{i}))+1)]);
 
+    %Image counter.
+    [num2str(i) ' done']
     
 end
 
@@ -111,7 +116,7 @@ BW_out = imcomplement(imbinarize(BW_in(:,:,1)));
 BW_out = imclearborder(BW_out);
 
 % Filter image based on image properties.
-BW_out = bwpropfilt(BW_out, 'Area', [3000,200000]);
+BW_out = bwpropfilt(BW_out, 'Area', [3000,300000]);
 
 % Get properties.
 properties = regionprops(BW_out, {'Area', 'Eccentricity', 'EquivDiameter', 'EulerNumber', 'MajorAxisLength', 'MinorAxisLength', 'Orientation', 'Perimeter'});
