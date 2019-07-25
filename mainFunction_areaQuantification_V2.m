@@ -13,6 +13,11 @@
 % If you want to see the list of areas, type
 % Area_array.name_of_file in the command window. 
 
+%{
+Ideas for updates:
+Threshold BW, maybe just H stain, output BW images to separate
+folder, parameters on excel file
+%}
 %{ 
 Updates:
 
@@ -20,16 +25,22 @@ Updates:
 
 Fixed a bug that made the program break after processing 26 pictures.
 
+07/25/19
+
+Fixed the bug that came from the bug fix on 07/24/19
+
 %}
 
-
+%% setup
 % clears the workspace
 clear all
 format compact
+% genpath
+addpath(genpath('../'))
 %% Inputs for user
 
 %Location is where your picture files are. Write the name in quotes.
-location = '~/Documents/Work for Scott/Pictures/Imiquimod_sections052319/';
+location = '../Put pictures in here/';
 
 %Name the excel file where the areas are stored. The file will be stored 
 %in the folder where the pictures are. Write the name in quotes.
@@ -118,7 +129,7 @@ end
 %Write name of each image for each column
 % namesTable = cell2table(names);
     
-writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(64 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
+writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(65 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
 
 end
 
