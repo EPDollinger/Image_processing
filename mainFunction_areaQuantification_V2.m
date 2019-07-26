@@ -5,18 +5,20 @@
 % is told to not quantify anything that touches the border of the image, and anything
 % that is smaller than 3000 pixels or larger than 300000. 
 % Note: the pictures need to be in either
-% JPG or PNG format, and there cannot be any spaces in the name of the
-% file.
-% If you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
-% the command window. If you want to see which spot corresponds to each area, 
+% JPG or PNG format.
+% 
+% Outputs:
+% - Excel file with all areas.
+% - BW pictures to BWpictures folder. 
+%
+% If you want to see which spot corresponds to each area, 
 % type imageRegionAnalyzer(BW_out_array.name_of_file). 
 % If you want to see the list of areas, type
 % Area_array.name_of_file in the command window. 
 
 %{
 Ideas for updates:
-Threshold BW, maybe just H stain, output BW images to separate
-folder, parameters on excel file
+Threshold BW, maybe just H stain, parameters on excel file
 %}
 %{ 
 Updates:
@@ -27,7 +29,10 @@ Fixed a bug that made the program break after processing 26 pictures.
 
 07/25/19
 
-Fixed the bug that came from the bug fix on 07/24/19
+Fixed the bug that came from the bug fix on 07/24/19.
+
+Added a function that saves all the BW pictures to a separate folder,
+../BWpictures
 
 %}
 
@@ -130,6 +135,11 @@ end
 % namesTable = cell2table(names);
     
 writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(65 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
+
+% Write all black and white pictures to a folder BWpictures
+for image = 1:length(names)
+    
+    imwrite(BW_out_array.(names{image}),['../BWpictures/' names{image} '.png'])
 
 end
 
