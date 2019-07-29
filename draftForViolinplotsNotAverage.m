@@ -7,9 +7,9 @@ P.Imiquimod = {};
 
 for it = 1:length(t_or_f)
     if t_or_f(it) == 1
-        P.Control = [P.Control;Average_area.(names{it})]; 
+        P.Control = [P.Control;Area_array.(names{it})]; 
     else
-        P.Imiquimod = [P.Imiquimod;Average_area.(names{it})]; 
+        P.Imiquimod = [P.Imiquimod;Area_array.(names{it})]; 
     end
 end
 

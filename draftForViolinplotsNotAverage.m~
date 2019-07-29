@@ -2,14 +2,18 @@ t_or_f = count(names,'Control');
 
 all_data = [];
 
+for name = 1:length(names)
+    all_data(name,:) = Area_array.(names{name});
+end
+
 P.Control = {};
 P.Imiquimod = {};
 
 for it = 1:length(t_or_f)
     if t_or_f(it) == 1
-        P.Control = [P.Control;Average_area.(names{it})]; 
+        P.Control = [P.Control;all_data(it)]; 
     else
-        P.Imiquimod = [P.Imiquimod;Average_area.(names{it})]; 
+        P.Imiquimod = [P.Imiquimod;all_data(it)]; 
     end
 end
 
