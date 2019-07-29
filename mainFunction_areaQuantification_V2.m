@@ -144,10 +144,7 @@ for image = 1:length(names)
 end
 
 end
-<<<<<<< HEAD
 
-=======
->>>>>>> d189159284d02477058d830692b1d59e2cc64841
 function [BW_out,properties] = filterRegions_one(BW_in)
 %filterRegions  Filter BW image using auto-generated code from imageRegionAnalyzer app.
 %  [BW_OUT,PROPERTIES] = filterRegions(BW_IN) filters binary image BW_IN
