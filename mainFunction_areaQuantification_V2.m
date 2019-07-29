@@ -59,7 +59,7 @@ I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. 
-[BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
+[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
 
 %% Supplemental functions
 
@@ -86,7 +86,7 @@ I_struct = cell2struct(I_list,filenames');
 
 end
 
-function [BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file)
+function [names,BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file)
 %% This is a function with input a structure of images (several images grouped together) 
 %% and output an excel file with list of areas. 
 
@@ -140,6 +140,8 @@ writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '
 for image = 1:length(names)
     
     imwrite(BW_out_array.(names{image}),['../BWpictures/' names{image} '.png'])
+
+end
 
 end
 
