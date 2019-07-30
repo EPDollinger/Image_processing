@@ -34,6 +34,14 @@ Fixed the bug that came from the bug fix on 07/24/19.
 Added a function that saves all the BW pictures to a separate folder,
 ../BWpictures
 
+07/29/19
+
+Added violin plots
+Added SEM plot
+Option to output BW pictures or paired BW and color
+pictures.
+
+
 %}
 
 %% setup
@@ -51,7 +59,15 @@ location = '../Put pictures in here/';
 %in the folder where the pictures are. Write the name in quotes.
 name_of_excel_file = '052319 pictures';
 
-%Do you want BW pictures stored, or paired BW pictures with 
+%Do you want BW pictures stored, or paired BW pictures with colored
+%pictures? Type 'BW' for just BW pictures, or 'paired' for paired color and
+%BW. 
+
+%% Parameters
+
+Parameters.QuantRange = [10000,300000];
+Parameters.Sensitivity = 0.6;
+Parameters.store_option = 'paired';
 
 %% Main function
 
@@ -61,10 +77,12 @@ I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. Also stores paired BW and color images
-[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
+[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],Parameters);
 
-%%
+%% Plots section
 Replicates = {'Control1','Control2','Control3','imiquimod1','imiquimod2','imiquimod3'};
+
+%Replicates = {'Control','imiquimod'};
 
 vplot_permouse(names,Area_array,Replicates)
 

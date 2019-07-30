@@ -5,25 +5,69 @@
 % is told to not quantify anything that touches the border of the image, and anything
 % that is smaller than 3000 pixels or larger than 300000. 
 % Note: the pictures need to be in either
-% JPG or PNG format, and there cannot be any spaces in the name of the
-% file.
-% If you want to see a BW picture, type imshow(BW_out_array.name_of_file) in
-% the command window. If you want to see which spot corresponds to each area, 
+% JPG or PNG format.
+% 
+% Outputs:
+% - Excel file with all areas.
+% - BW pictures to BWpictures folder. 
+%
+% If you want to see which spot corresponds to each area, 
 % type imageRegionAnalyzer(BW_out_array.name_of_file). 
 % If you want to see the list of areas, type
 % Area_array.name_of_file in the command window. 
 
+%{
+Ideas for updates:
+Threshold BW, maybe just H stain, parameters on excel file
+%}
+%{ 
+Updates:
+
+07/24/19
+
+Fixed a bug that made the program break after processing 26 pictures.
+
+07/25/19
+
+Fixed the bug that came from the bug fix on 07/24/19.
+
+Added a function that saves all the BW pictures to a separate folder,
+../BWpictures
+
+07/29/19
+
+Added violin plots
+Added SEM plot
+Option to output BW pictures or paired BW and color
+pictures.
+Added Parameters to simplify parameter selection.
+
+%}
+
+%% setup
 % clears the workspace
 clear all
 format compact
+% genpath
+addpath(genpath('../'))
 %% Inputs for user
 
 %Location is where your picture files are. Write the name in quotes.
-location = '~/Documents/Work for Scott/Image_processing/Pictures/Imiquimod_sections052019/';
+location = '../Put pictures in here/';
 
 %Name the excel file where the areas are stored. The file will be stored 
 %in the folder where the pictures are. Write the name in quotes.
-name_of_excel_file = 'All counts for area';
+name_of_excel_file = '052319 pictures';
+
+%Do you want BW pictures stored, or paired BW pictures with colored
+%pictures? Type 'BW' for just BW pictures, or 'paired' for paired color and
+%BW. 
+
+%% Parameters
+
+Parameters.QuantRange = [10000,300000];
+Parameters.Sensitivity = 0.6;
+Parameters.store_option = 'paired';
 
 %% Main function
 
@@ -32,110 +76,14 @@ name_of_excel_file = 'All counts for area';
 I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
-%cell of the areas of each file. 
-[BW_out_array,Area_array] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
+%cell of the areas of each file. Also stores paired BW and color images
+[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],Parameters);
 
-%% Supplemental functions
+%% Plots section
+Replicates = {'Control1','Control2','Control3','imiquimod1','imiquimod2','imiquimod3'};
 
-function I_struct = load_data_and_clean_filenames(location)
+%Replicates = {'Control','imiquimod'};
 
-dir_struct = dir([location '/*.*g']);
+vplot_permouse(names,Area_array,Replicates)
 
-%Name the files
-filenames = {dir_struct.name};
 
-for filename_number = 1:length(filenames)
-    filenames{filename_number} = filenames{filename_number}(1:end-4);
-    filenames{filename_number} = strrep(filenames{filename_number},' ','_');
-end
-
-%read the images into a datastore
-ds = imageDatastore(location,'Labels',filenames);
-
-%read the images into a cell
-I_list = readall(ds); 
-
-%read the images into a structure
-I_struct = cell2struct(I_list,filenames'); 
-
-end
-
-function [BW_out_array,Area_array] = multiple_fR(structure_of_images,name_of_excel_file)
-%% This is a function with input a structure of images (several images grouped together) 
-%% and output an excel file with list of areas. 
-
-%% Variable setup
-Area_array = {}; % setting up variables
-
-BW_out_array = {}; % setting up variables
-
-names = fieldnames(structure_of_images); %The list of names of each picture
-
-%% Actual code. This block runs filterRegions_one on each picture in the group, stores the black and white image that is actually being quantified, and outputs the areas of the white images to the excel file.
-
-%How many pictures there are
-['There are ' num2str(length(names)) ' pictures']
-
-for i = 1:numel(names) %iterate over the number of pictures
-        
-    %store BW image, and properties from running filterRegions_one on each
-    %image
-    [BW_out_array.(names{i}),props] = filterRegions_one(structure_of_images.(names{i})); 
-    
-    %store Area specifically from properties
-    Area_array.(names{i}) = props.Area;
-    
-    %Write Area in a column in excel. Each image has its own column and the
-    %numbering starts at A.
-    writematrix(Area_array.(names{i}),name_of_excel_file,'FileType','Spreadsheet','Range',[char(64+i) '2:' char(64+i) num2str(length(Area_array.(names{i}))+1)]);
-
-    %Image counter.
-    [num2str(i) ' done']
-    
-end
-
-%Write name of each image for each column
-writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(64+length(names)) '1']); 
-
-end
-
-function [BW_out,properties] = filterRegions_one(BW_in)
-%filterRegions  Filter BW image using auto-generated code from imageRegionAnalyzer app.
-%  [BW_OUT,PROPERTIES] = filterRegions(BW_IN) filters binary image BW_IN
-%  using auto-generated code from the imageRegionAnalyzer app. BW_OUT has
-%  had all of the options and filtering selections that were specified in
-%  imageRegionAnalyzer applied to it. The PROPERTIES structure contains the
-%  attributes of BW_out that were visible in the app.
-
-% Auto-generated by imageRegionAnalyzer app on 21-Jun-2019
-%---------------------------------------------------------
-
-BW_out = imcomplement(imbinarize(BW_in(:,:,1)));
-
-% Remove portions of the image that touch an outside edge.
-BW_out = imclearborder(BW_out);
-
-% Filter image based on image properties.
-BW_out = bwpropfilt(BW_out, 'Area', [3000,300000]);
-
-% Get properties.
-properties = regionprops(BW_out, {'Area', 'Eccentricity', 'EquivDiameter', 'EulerNumber', 'MajorAxisLength', 'MinorAxisLength', 'Orientation', 'Perimeter'});
-
-% Sort the properties.
-properties = sortProperties(properties, 'Area');
-
-% Uncomment the following line to return the properties in a table.
-properties = struct2table(properties);
-
-%writematrix(properties.Area,['Area count'],'FileType', 'spreadsheet')
-
-function properties = sortProperties(properties, sortField)
-
-    % Compute the sort order of the structure based on the sort field.
-    [~,idx] = sort([properties.(sortField)], 'descend');
-
-    % Reorder the entire structure.
-    properties = properties(idx);
-    
-end
-end

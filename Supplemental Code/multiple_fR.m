@@ -1,4 +1,4 @@
-function [names,BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file,store_option)
+function [names,BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file,Parameters)
 %% This is a function with input a structure of images (several images grouped together) 
 %% and output an excel file with list of areas. 
 
@@ -20,7 +20,7 @@ for i = 1:numel(names) %iterate over the number of pictures
         
     %store BW image, and properties from running filterRegions_one on each
     %image
-    [BW_out_array.(names{i}),props] = filterRegions_one(structure_of_images.(names{i})); 
+    [BW_out_array.(names{i}),props] = filterRegions_one(structure_of_images.(names{i}),Parameters); 
     
     %store Area specifically from properties
     Area_array.(names{i}) = props.Area;
@@ -49,6 +49,6 @@ end
 writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(65 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
 
 %Pair color and BW picture and output to file
-BWandColorOut(names,BW_out_array,structure_of_images,store_option)
+BWandColorOut(names,BW_out_array,structure_of_images,Parameters.store_option)
 
 end
