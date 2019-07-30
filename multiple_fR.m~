@@ -1,4 +1,4 @@
-function [names,BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file,store_option)
+function [names,BW_out_array,Area_array,Average_area] = multiple_fR(structure_of_images,name_of_excel_file)
 %% This is a function with input a structure of images (several images grouped together) 
 %% and output an excel file with list of areas. 
 
@@ -39,7 +39,7 @@ for i = 1:numel(names) %iterate over the number of pictures
 
     end
     %Image counter.
-    [names{i} ' quantified']
+    [num2str(i) ' done']
     
 end
 
@@ -48,7 +48,7 @@ end
     
 writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(65 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
 
-%Pair color and BW picture and output to file
-BWandColorOut(names,BW_out_array,structure_of_images,store_option)
+%
+BWandColorOut(names,BW_out_array)
 
 end

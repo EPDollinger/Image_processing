@@ -51,11 +51,7 @@ location = '../Put pictures in here/';
 %in the folder where the pictures are. Write the name in quotes.
 name_of_excel_file = '052319 pictures';
 
-%Do you want BW pictures stored, or paired BW pictures with colored
-%pictures? Type 'BW' for just BW pictures, or 'paired' for paired color and
-%BW. 
-
-store_option = 'BW';
+%Do you want BW pictures stored, or paired BW pictures with 
 
 %% Main function
 
@@ -65,7 +61,7 @@ I_struct = load_data_and_clean_filenames(location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. Also stores paired BW and color images
-[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],store_option);
+[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date]);
 
 %%
 Replicates = {'Control1','Control2','Control3','imiquimod1','imiquimod2','imiquimod3'};
