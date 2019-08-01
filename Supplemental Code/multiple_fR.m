@@ -28,6 +28,13 @@ for i = 1:numel(names) %iterate over the number of pictures
     %store Average area of each picture
     Average_area.(names{i}) = mean(Area_array.(names{i}));
     
+    %if 
+    
+    [char(64+i) '2:' char(64+i) num2str(length(Area_array.(names{i}))+1)]
+    [char(64 + floor(i/26)) char(65+i - floor(i/26)*26) '2:' char(64 + floor(i/26)) char(65+i- floor(i/26)*26) num2str(length(Area_array.(names{i}))+1)]
+    
+    i
+    
     if i / 26 < 1 %if the column can start in A
         %Write Area in a column in excel. Each image has its own column and the
         %numbering starts at A.
@@ -35,7 +42,7 @@ for i = 1:numel(names) %iterate over the number of pictures
         
     elseif i / 26 > 1 %the column starts in AA, AB, AC, etc.
         
-        writematrix(Area_array.(names{i}),name_of_excel_file,'FileType','Spreadsheet','Range',[char(64 + floor(i/26)) char(64+i - floor(i/26)*26) '2:' char(64 + floor(i/26)) char(64+i- floor(i/26)*26) num2str(length(Area_array.(names{i}))+1)]);
+        writematrix(Area_array.(names{i}),name_of_excel_file,'FileType','Spreadsheet','Range',[char(64 + floor(i/26)) char(65+i - floor(i/26)*26) '2:' char(64 + floor(i/26)) char(65+i- floor(i/26)*26) num2str(length(Area_array.(names{i}))+1)]);
 
     end
     %Image counter.

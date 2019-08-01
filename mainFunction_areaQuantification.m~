@@ -3,9 +3,8 @@
 % The outputs are the black and white images that are actually
 % quantified and the excel file with the areas of each image. The function 
 % is told to not quantify anything that touches the border of the image, and anything
-% that is smaller than 3000 pixels or larger than 300000. 
-% Note: the pictures need to be in either
-% JPG or PNG format.
+% that is not within the specified range of pixels, see Parameters section. 
+% Note: the pictures need to be in either JPG or PNG format.
 % 
 % Outputs:
 % - Excel file with all areas.
@@ -40,7 +39,7 @@ Added violin plots
 Added SEM plot
 Option to output BW pictures or paired BW and color
 pictures.
-
+Added Parameters to simplify parameter selection.
 
 %}
 
@@ -48,7 +47,7 @@ pictures.
 % clears the workspace
 clear all
 format compact
-% genpath
+% Add the parent folder and subdirectories to path
 addpath(genpath('../'))
 %% Inputs for user
 
@@ -59,15 +58,11 @@ location = '../Put pictures in here/';
 %in the folder where the pictures are. Write the name in quotes.
 name_of_excel_file = '052319 pictures';
 
-%Do you want BW pictures stored, or paired BW pictures with colored
-%pictures? Type 'BW' for just BW pictures, or 'paired' for paired color and
-%BW. 
-
 %% Parameters
 
-Parameters.QuantRange = [10000,300000];
-Parameters.Sensitivity = 0.6;
-Parameters.store_option = 'paired';
+Parameters.QuantRange = [10000,300000]; % Only quantify regions in this pixel range
+Parameters.Sensitivity = 0.6; % Sensitivity for imbinarize
+Parameters.store_option = 'paired'; % Type 'BW' for just BW pictures, or 'paired' for paired color and BW. 
 
 %% Main function
 
@@ -79,11 +74,19 @@ I_struct = load_data_and_clean_filenames(location);
 %cell of the areas of each file. Also stores paired BW and color images
 [names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],Parameters);
 
-%% Plots section
+%% Plots section. vplot_SEMplot plots both a violinplot and a SEM plot. Replicates is 
+% how you want your plots to be organized. Say you have a Control set of
+% pictures and a Drug set of pictures. You can define Replicates =
+% {'Control','Drug'} and it will plot all the replicates of Control and
+% Drug together. You can also define Replicates =
+% {'Control1','Control2'...,'Drug1','Drug2'...} and it will plot each
+% replicate individually. The string has to be in the picture name, e.g. if
+% one replicate is called mouse3_1.jpg, mouse3_2.jpg, etc. 
+
 Replicates = {'Control1','Control2','Control3','imiquimod1','imiquimod2','imiquimod3'};
 
 %Replicates = {'Control','imiquimod'};
 
-vplot_permouse(names,Area_array,Replicates)
+vplot_SEMplot(names,Area_array,Replicates)
 
 
