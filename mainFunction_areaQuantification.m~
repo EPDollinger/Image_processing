@@ -89,8 +89,8 @@ I_struct = load_data_and_clean_filenames(location);
 
 Replicates = {'Control1','Control2','Control3','Imiquimod1','Imiquimod2','Imiquimod3'};
 
-%Replicates = {'Control','Imiquimod'};
+%Replicates = {'Control','imiquimod'};
 
-[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,location);
+[fig,barplot,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,);
 
 

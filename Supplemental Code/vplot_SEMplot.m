@@ -1,4 +1,4 @@
-function [vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates)
+function [fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,FolderToSavePicture)
 %% Makes a violin plot and an SEM plot of the categories that are in Replicates. An 
 %% example of Replicates is a replicate (e.g. Control 1, Control 2) or a group of replicates
 %% (e.g. Control).
@@ -14,7 +14,6 @@ for replicate = 1:length(Replicates)
     count_of_image(replicate) = sum(t_or_f);
 
     %parameter setup
-    all_data = [];
     P.(Replicates{replicate}) = {};
     
     % Looks for all the values in Area_array that contain replicate name,
@@ -38,19 +37,7 @@ for replicate = 1:length(Replicates)
 
 end
 
-%% Barplot of how many images per replicate
-subplot(3,1,1)
-cat = categorical(Replicates);
-bar(cat,count_of_image)
-ylabel('Number of pictures for each replicate')
-
-%% Violinplot
-
-subplot(3,1,2);
-vplot = violinplot(P);
-ylabel('Size of each quantified area (in pixels)')
-
-%% Error plot. This plots the mean and SEM of each replicate, in 
+%% Error plot prep. This calculates the mean and SEM of each replicate, in 
 %% the order of the list Replicates
 
 % Parameter prep
@@ -73,11 +60,49 @@ for replicate = 1:length(Replicates)
     
 end
 
-%% Plot SEM figure
-subplot(3,1,3);
+%% Prep for barplot of how many areas quantified per replicate
+
+for replicate = 1:length(Replicates)
+    
+    % Calculate the number of areas quantified per replicate
+    count_areas_per_replicate(replicate) = length(P.(Replicates{replicate}));
+    
+end
+
+%% Plot figure section
+% Barplot of how many images per replicate
+fig = figure;
+cat = categorical(Replicates);
+
+subplot(3,2,1);
+bar_images = bar(cat,count_of_image);
+ylabel('Number of pictures per replicate')
+
+% Barplot of how many areas per replicate
+subplot(3,2,3);
+
+bar_areas = bar(cat,count_areas_per_replicate);
+ylabel('Number of areas per replicate')
+
+% Violinplot
+
+subplot(3,2,[2,4]);
+vplot = violinplot(P);
+ylabel('Size of each quantified area (in pixels)')
+
+% Plot SEM figure
+subplot(3,2,[5,6]);
 SEM = errorbar(x,y,err,'o');
 xlim([0.5 length(Replicates) + 0.5]);
 ylabel('Average and SEM of quantified area per replicate (in pixels)')
+
+% Final figure adjustments
+fig.Position = [198,0,1680,1260];
+
+% Save figure
+print([FolderToSavePicture 'Plot processed ' date],'-dpng')
+
+
 
 end
 
