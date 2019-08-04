@@ -38,7 +38,8 @@ end
 %% Violinplot
 vplot = violinplot(P);
 
-%% Error plot
+%% Error plot. This plots the mean and SEM of each replicate, in 
+%% the order of the list Replicates
 
 % Parameter prep
 x = [];
