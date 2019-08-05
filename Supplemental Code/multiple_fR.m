@@ -17,7 +17,7 @@ Average_area = {};
 ['There are ' num2str(length(names)) ' pictures']
 
 for i = 1:numel(names) %iterate over the number of pictures
-        
+         
     %store BW image, and properties from running filterRegions_one on each
     %image
     [BW_out_array.(names{i}),props] = filterRegions_one(structure_of_images.(names{i}),Parameters); 
@@ -39,7 +39,7 @@ for i = 1:numel(names) %iterate over the number of pictures
 
     end
     %Image counter.
-    [names{i} ' quantified']
+    [num2str(i) '/' num2str(length(names)) ' quantified']
     
 end
 

@@ -100,7 +100,7 @@ ylabel('Average and SEM of quantified area per replicate (in pixels)')
 fig.Position = [198,0,1680,1260];
 
 % Save figure
-print([FolderToSavePicture 'Plot processed ' date],'-dpng')
+print(['../BWpictures/Plots processed ' date],'-dpng')
 
 
 

@@ -1,4 +1,4 @@
-function [fig,barplot,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,FolderToSavePicture)
+function [fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,FolderToSavePicture)
 %% Makes a violin plot and an SEM plot of the categories that are in Replicates. An 
 %% example of Replicates is a replicate (e.g. Control 1, Control 2) or a group of replicates
 %% (e.g. Control).
@@ -75,18 +75,18 @@ fig = figure;
 cat = categorical(Replicates);
 
 subplot(3,2,1);
-barplot = bar(cat,count_of_image);
+bar_images = bar(cat,count_of_image);
 ylabel('Number of pictures per replicate')
 
 % Barplot of how many areas per replicate
-subplot(3,2,2);
+subplot(3,2,3);
 
-barplot(cat,count_areas_per_replicate)
+bar_areas = bar(cat,count_areas_per_replicate);
 ylabel('Number of areas per replicate')
 
 % Violinplot
 
-subplot(3,2,[3,4]);
+subplot(3,2,[2,4]);
 vplot = violinplot(P);
 ylabel('Size of each quantified area (in pixels)')
 
@@ -98,6 +98,14 @@ ylabel('Average and SEM of quantified area per replicate (in pixels)')
 
 % Final figure adjustments
 fig.Position = [198,0,1680,1260];
+
+for replicate = 1:length(Replicates)
+    
+    % Calculate the number of areas quantified per replicate
+    count_areas_per_replicate(replicate) = length(P.(Replicates{replicate}));
+    
+end
+
 
 % Save figure
 print([FolderToSavePicture 'Plot processed ' date],'-dpng')

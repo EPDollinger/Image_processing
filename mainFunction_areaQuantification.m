@@ -64,7 +64,7 @@ name_of_excel_file = '052019 and 052319 pictures';
 
 Parameters.QuantRange = [3000,300000]; % Only quantify regions in this pixel range
 Parameters.Sensitivity = 0.7; % Sensitivity for imbinarize
-Parameters.store_option = 'paired'; % Type 'BW' for just BW pictures, or 'paired' for paired color and BW. 
+Parameters.store_option = 'BW'; % Type 'BW' for just BW pictures, or 'paired' for paired color and BW. 
 
 %% Main function
 
