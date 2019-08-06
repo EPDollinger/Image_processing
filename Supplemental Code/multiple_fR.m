@@ -48,7 +48,4 @@ end
     
 writecell(names',name_of_excel_file,'FileType','Spreadsheet','Range',[char(65) '1:' char(65 + floor(length(names)/26)) char(64+length(names) - floor(length(names)/26)*26) '1']); 
 
-%Pair color and BW picture and output to file
-BWandColorOut(names,BW_out_array,structure_of_images,Parameters.store_option)
-
 end

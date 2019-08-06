@@ -76,6 +76,9 @@ I_struct = load_data_and_clean_filenames(location);
 %cell of the areas of each file. Also stores paired BW and color images
 [names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],Parameters);
 
+%Pair color and BW picture and output to file
+BWandColorOut(names,BW_out_array,I_struct,Parameters.store_option)
+
 %% Plots section. vplot_SEMplot plots both a violinplot and a SEM plot. Replicates is 
 % how you want your plots to be organized. Say you have a Control set of
 % pictures and a Drug set of pictures. You can define Replicates =
