@@ -69,8 +69,8 @@ name_of_excel_file = '052019 and 052319 pictures';
 % Replicates = {'Drug','Control'} (average and plot only conditions), or 
 % Replicates = {'Drug1','Drug2',...,'Control1','Control2',...} (average and plot pictures from each replicate), etc.
 
-Replicates = {'Imiquimod'};
-%Replicates = {'Control','Imiquimod'};
+%Replicates = {'Imiquimod'};
+Replicates = {'Control','Imiquimod'};
 
 %% Parameters
 
@@ -95,6 +95,6 @@ BWandColorOut(names,BW_out_array,I_struct,Parameters.store_option)
 
 %% Plots section. vplot_SEMplot plots both a violinplot and a SEM plot. 
 
-[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,location,Parameters.output_plots);
+[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters.output_plots);
 
 
