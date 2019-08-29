@@ -8,6 +8,8 @@ filenames = {dir_struct.name};
 for filename_number = 1:length(filenames)
     filenames{filename_number} = filenames{filename_number}(1:end-4);
     filenames{filename_number} = strrep(filenames{filename_number},' ','_');
+    filenames{filename_number} = strrep(filenames{filename_number},'.','_');
+    filenames{filename_number} = strrep(filenames{filename_number},',','_');
 end
 
 %read the images into a datastore
