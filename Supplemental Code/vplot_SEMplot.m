@@ -1,9 +1,9 @@
-function [fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,param)
+function [fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters)
 %% Makes a violin plot and an SEM plot of the categories that are in Replicates. An 
 %% example of Replicates is a replicate (e.g. Control 1, Control 2) or a group of replicates
 %% (e.g. Control).
 
-if param == 0
+if Parameters.output_plots == 0
     return
 end
 
@@ -119,7 +119,7 @@ for replicate_no = 1:length(Replicates)
         
 end
     
-print(['../Plots/Plots' title ' processed ' date],'-dpng')
+print([Parameters.output_location_plots 'Plots' title ' processed ' date],'-dpng')
 
 
 

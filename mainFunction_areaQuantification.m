@@ -70,31 +70,31 @@ name_of_excel_file = '052019 and 052319 pictures';
 % Replicates = {'Drug1','Drug2',...,'Control1','Control2',...} (average and plot pictures from each replicate), etc.
 
 %Replicates = {'Imiquimod'};
-Replicates = {'Control','Imiquimod'};
+Replicates = {'sample1','sample2','sample3'};
 
 %% Parameters
 
-location = '../Put pictures in here/'; %Location is where your picture files are. Write the name in quotes.
+Parameters.input_location = '../Put pictures in here/'; %Location is where your picture files are. Write the name in quotes.
+Parameters.output_location_BWpictures = '../BWpictures/'; %Where the BW pictures or paired pictures are taken
+Parameters.output_location_plots = '../Plots/'; %Where you want the output plots to be stored
 Parameters.QuantRange = [3000,300000]; % Only quantify regions in this pixel range
 Parameters.Sensitivity = 0.7; % Sensitivity for imbinarize
-Parameters.store_option = 'BW'; % Type 'BW' for just BW pictures, or 'paired' for paired color and BW.
+Parameters.store_option = 'BW'; % Type 'BW' for just BW pictures, or 'paired' for paired original picture and BW.
 Parameters.output_plots = 1; % If you want plots, type 1. If you don't want plots, type 0.
 
 %% Main function
 
 %load_data_and_clean_filenames loads the data and removes '.jpg' from the
 %end of the filename. I_struct contains the BW images and their names. 
-I_struct = load_data_and_clean_filenames(location);
+I_struct = load_data_and_clean_filenames(Parameters.input_location);
 
 %run the code on the images. BW_out_array is the BW images, Area_array is a
 %cell of the areas of each file. Also stores paired BW and color images
-[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[location name_of_excel_file ' Processed ' date],Parameters);
+[names,BW_out_array,Area_array,Average_area] = multiple_fR(I_struct,[Parameters.input_location name_of_excel_file ' Processed ' date],Parameters);
 
 %Pair color and BW picture and output to file
-BWandColorOut(names,BW_out_array,I_struct,Parameters.store_option)
+BWandColorOut(names,BW_out_array,I_struct,Parameters)
 
 %% Plots section. vplot_SEMplot plots both a violinplot and a SEM plot. 
 
-[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters.output_plots);
-
-
+[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters)
