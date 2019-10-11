@@ -77,6 +77,7 @@ end
 % Barplot of how many images per replicate
 fig = figure;
 cat = categorical(Replicates);
+cat = reordercats(cat,Replicates);
 
 subplot(3,2,1);
 bar_images = bar(cat,count_of_image);
