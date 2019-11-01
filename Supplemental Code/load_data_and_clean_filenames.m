@@ -10,6 +10,7 @@ for filename_number = 1:length(filenames)
     filenames{filename_number} = strrep(filenames{filename_number},' ','_');
     filenames{filename_number} = strrep(filenames{filename_number},'.','_');
     filenames{filename_number} = strrep(filenames{filename_number},',','_');
+    filenames{filename_number} = strrep(filenames{filename_number},'-','_');
 end
 
 %read the images into a datastore
