@@ -55,13 +55,14 @@ Added param to ask whether the plots are wanted or not.
 % clears the workspace
 clear all
 format compact
+cd('/Users/atwoodlab1/Desktop/Tumor quantification 1/Image_processing')
 % Add the parent folder and subdirectories to path
 addpath(genpath('../'))
 %% Inputs for user
 
 %Name the excel file where the areas are stored. The file will be stored 
 %in the folder where the pictures are. Write the name in quotes.
-name_of_excel_file = '052019 and 052319 pictures';
+name_of_excel_file = '20191101 Gli Ptch 0w 2w 4w 8w 10w 20w Back';
 
 % Replicates is how you want your violin, SEM and QC plots to be organized. 
 % Example: if the pictures are called Drug1_picture1.jpg, Drug1_picture2.jpg, 
@@ -70,14 +71,19 @@ name_of_excel_file = '052019 and 052319 pictures';
 % Replicates = {'Drug1','Drug2',...,'Control1','Control2',...} (average and plot pictures from each replicate), etc.
 
 %Replicates = {'Imiquimod'};
-Replicates = {'Control','Imiquimod'};
+
+Replicates = {'zerow','twow','fourw','eightw','tenw','twentyw'};
 
 %% Parameters
 
 location = '../Put pictures in here/'; %Location is where your picture files are. Write the name in quotes.
 Parameters.QuantRange = [3000,300000]; % Only quantify regions in this pixel range
 Parameters.Sensitivity = 0.7; % Sensitivity for imbinarize
+
 Parameters.store_option = 'BW'; % Type 'BW' for just BW pictures, or 'paired' for paired color and BW.
+
+Parameters.store_option = 'paired'; % Type 'BW' for just BW pictures, or 'paired' for paired original picture and BW.
+
 Parameters.output_plots = 1; % If you want plots, type 1. If you don't want plots, type 0.
 
 %% Main function
