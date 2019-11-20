@@ -1,5 +1,7 @@
-function [BW_out,properties] = filterRegions_one(BW_in,Parameters)
-%filterRegions  Filter BW image using auto-generated code from imageRegionAnalyzer app.
+function [BW_out,properties,emptyornot] = filterRegions_one(BW_in,Parameters)
+%filterRegions  Filter BW image using auto-generated code from
+%imageRegionAnalyzer app. emptyornot is 0 if no areas are quantified given
+%the parameters set up in the main function.
 %  [BW_OUT,PROPERTIES] = filterRegions(BW_IN) filters binary image BW_IN
 %  using auto-generated code from the imageRegionAnalyzer app. BW_OUT has
 %  had all of the options and filtering selections that were specified in
@@ -22,6 +24,18 @@ properties = regionprops(BW_out, {'Area', 'Eccentricity', 'EquivDiameter', 'Eule
 
 % Sort the properties.
 properties = sortProperties(properties, 'Area');
+
+% If no areas are quantified, output an error and break out of function
+
+if length(properties) == 0
+        
+    emptyornot = 0;
+    
+    return
+    
+end
+
+emptyornot = 1;
 
 % Uncomment the following line to return the properties in a table.
 properties = struct2table(properties);
