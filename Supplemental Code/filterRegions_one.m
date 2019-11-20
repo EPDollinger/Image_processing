@@ -14,7 +14,7 @@ BW_out = imcomplement(imbinarize(BW_in(:,:,1),'adaptive','Sensitivity',Parameter
 % Remove portions of the image that touch an outside edge.
 BW_out = imclearborder(BW_out);
 
-% Filter image based on image properties.
+% Filter image based on image properties, ie area.
 BW_out = bwpropfilt(BW_out, 'Area', Parameters.QuantRange);
 
 % Get properties.
