@@ -36,10 +36,10 @@ for i = 1:numel(names) %iterate over the number of pictures
         outputnames = outputnames(~ismember(outputnames,names{i}),:);
         
         %store Area = 0
-        Area_array.(names{i}) = 0;
+        Area_array.(names{i}) = [];
 
         %store Average area = 0
-        Average_area.(names{i}) = 0;
+        Average_area.(names{i}) = [];
         
         ['No areas quantified for ',names{i}]
 
