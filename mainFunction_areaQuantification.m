@@ -61,7 +61,7 @@ addpath(genpath('../'))
 
 %Name the excel file where the areas are stored. The file will be stored 
 %in the folder where the pictures are. Write the name in quotes.
-name_of_excel_file = '052019 and 052319 pictures';
+name_of_excel_file = '111919 Gli Ptch Back cropped';
 
 % Replicates is how you want your violin, SEM and QC plots to be organized. 
 % Example: if the pictures are called Drug1_picture1.jpg, Drug1_picture2.jpg, 
@@ -70,14 +70,14 @@ name_of_excel_file = '052019 and 052319 pictures';
 % Replicates = {'Drug1','Drug2',...,'Control1','Control2',...} (average and plot pictures from each replicate), etc.
 
 %Replicates = {'Imiquimod'};
-Replicates = {'sample1','sample2','sample3'};
+Replicates = {'Zerow','Twow','Eightw','Eighteenw','Twentyw'};
 
 %% Parameters
 
 Parameters.input_location = '../Put pictures in here/'; %Location is where your picture files are. Write the name in quotes.
 Parameters.output_location_BWpictures = '../BWpictures/'; %Where the BW pictures or paired pictures are taken
 Parameters.output_location_plots = '../Plots/'; %Where you want the output plots to be stored
-Parameters.QuantRange = [3000,300000]; % Only quantify regions in this pixel range
+Parameters.QuantRange = [600,300000]; % Only quantify regions in this pixel range
 Parameters.Sensitivity = 0.7; % Sensitivity for imbinarize
 Parameters.store_option = 'BW'; % Type 'BW' for just BW pictures, or 'paired' for paired original picture and BW.
 Parameters.output_plots = 1; % If you want plots, type 1. If you don't want plots, type 0.
@@ -97,4 +97,4 @@ BWandColorOut(names,BW_out_array,I_struct,Parameters)
 
 %% Plots section. vplot_SEMplot plots both a violinplot and a SEM plot. 
 
-[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters)
+[fig,bar_images,bar_areas,vplot,SEM] = vplot_SEMplot(names,Area_array,Replicates,Parameters);
