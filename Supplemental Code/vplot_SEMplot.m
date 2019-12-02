@@ -79,13 +79,13 @@ fig = figure;
 cat = categorical(Replicates);
 cat = reordercats(cat,Replicates);
 
+% Barplot of number of pictures per replicate
 subplot(3,2,1);
 bar_images = bar(cat,count_of_image);
 ylabel('Number of pictures per replicate')
 
 % Barplot of how many areas per replicate
 subplot(3,2,3);
-
 bar_areas = bar(cat,count_areas_per_replicate);
 ylabel('Number of areas per replicate')
 
@@ -97,8 +97,13 @@ ylabel('Size of each quantified area (in pixels)')
 
 % Plot SEM figure
 subplot(3,2,[5,6]);
-SEM = errorbar(x,y,err,'o');
-xlim([0.5 length(Replicates) + 0.5]);
+hold on
+bar(cat,y)
+SEM = errorbar(x,y,err);
+SEM.Color = [0,0,0];
+SEM.LineWidth = 2;
+SEM.LineStyle = 'none';
+hold off
 ylabel(['Average and SEM of quantified area' newline 'per replicate (in pixels)'])
 
 % Final figure adjustments
